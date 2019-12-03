@@ -1,0 +1,11 @@
+# Example website
+example.com {
+	tls admin@example.com {
+        dns cloudflare
+    }
+    gzip
+    bind 0.0.0.0
+    proxy / wordpress:80 {
+        transparent
+    }
+}

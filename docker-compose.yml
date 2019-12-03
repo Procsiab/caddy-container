@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+    caddy:
+        image: procsiab/caddy:arm32
+        container_name: caddy
+        hostname: caddy
+        ports:
+            - "0.0.0.0:80:80/tcp"
+            - "0.0.0.0:443:443/tcp"
+        volumes:
+            - ./config/:/root/.caddy:z
+            - ./Caddyfile/:/etc/Caddyfile:z
+        environment:
+            - ENABLE_TELEMETRY=false
+        restart: unless-stopped
+        cap_add:
+            - NET_BIND_SERVICE
+        networks:
+            - caddy_exposed
+            - caddy_backbone
+
+networks:
+    caddy_exposed:
+        external: true
+    caddy_backbone:
+        external: true
