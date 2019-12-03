@@ -87,3 +87,11 @@ you can use the `docker-compose restart` command.
 
 The Caddyfile and the secrets in the secrets.env file are built to allow a user 
 to quickly set up his Cloudflare DNS routing with the Caddy proxy container.
+
+----
+
+**WARNING**
+
+The default docker-compose.yml file will pull the `arm32` variant of the image: 
+check the Docker Hub for the desired variant, or build it yourself for your 
+target architecture and change the `image` statement in the compose file.
