@@ -11,10 +11,10 @@ services:
         volumes:
             - ./config/:/root/.caddy:z
             - ./Caddyfile/:/etc/Caddyfile:z
+        env_file:
+            - ./secrets.env
         environment:
             - ENABLE_TELEMETRY=false
-            - CLOUDFLARE_API_KEY={$CLOUDFLARE_API_KEY}
-            - CLOUDFLARE_EMAIL={$CLOUDFLARE_EMAIL}
         restart: unless-stopped
         cap_add:
             - NET_BIND_SERVICE
