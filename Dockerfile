@@ -1,11 +1,10 @@
+FROM alpine:3.10
+LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
+
 # Configuration parameters
 ARG collect_metrics=off
 ARG license_type=personal
 ARG linux_architecture=armv7
-ARG alpine_image_version=latest
-
-FROM alpine:$alpine_image_version
-LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Download environment tools
 RUN apk add --no-cache \
@@ -15,7 +14,7 @@ RUN apk add --no-cache \
 
 # Download Caddy from its website
 RUN cd /tmp && \
-    wget https://caddyserver.com/download/linux/arm7\?plugins\=http.forwardproxy,http.ipfilter,http.minify,http.nobots,http.proxyprotocol,http.ratelimit,http.realip,http.restic,tls.dns.cloudflare\&license\=$license_type\&telemetry\=$collect_metrics -O caddy.tar.gz && \
+    wget https://caddyserver.com/download/linux/${linux_architecture}\?plugins\=http.forwardproxy,http.ipfilter,http.minify,http.nobots,http.proxyprotocol,http.ratelimit,http.realip,http.restic,tls.dns.cloudflare\&license\=${license_type}\&telemetry\=${collect_metrics} -O caddy.tar.gz && \
     tar -zxf caddy.tar.gz caddy && \
     mv /tmp/caddy /usr/bin/caddy
 
