@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caddy
+spec:
+  selector:
+    matchLabels:
+      run: caddy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: caddy
+    spec:
+      volumes:
+      - name: config-folder
+        hostPath:
+            path: /home/sailor/caddy-container/config
+            type: Directory
+      - name: config-file
+        hostPath:
+            path: /home/sailor/caddy-container/Caddyfile
+            type: File
+      containers:
+      - name: caddy
+        image: procsiab/caddy:amd64
+        ports:
+        - containerPort: 443
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /root/.caddy
+          name: config-folder
+        - mountPath: /etc/Caddyfile
+          name: config-file
+        env:
+        - name: CLOUDFLARE_API_KEY
+          valueFrom:
+              secretKeyRef:
+                  name: cloudflare-credentials
+                  key: api-key
+        - name: CLOUDFLARE_EMAIL
+          valueFrom:
+              secretKeyRef:
+                  name: cloudflare-credentials
+                  key: email
+        - name: ENABLE_TELEMETRY
+          value: "false"

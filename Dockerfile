@@ -4,7 +4,7 @@ LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 # Configuration parameters
 ARG collect_metrics=off
 ARG license_type=personal
-ARG linux_architecture=armv7
+ARG linux_architecture=amd64
 
 # Download environment tools
 RUN apk add --no-cache \
