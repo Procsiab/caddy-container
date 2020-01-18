@@ -19,7 +19,7 @@ docker build -t mycustom/caddy .
 You can change the following options
 - `collect_metrics` (on | off)
 - `license_type` (personal | enterprise)
-- `linux_architecture` (armv7 | amd64 | ...)
+- `linux_architecture` (arm7 | amd64 | ...)
 - `alpine_image_version` (latest | 3.10 | ...)
 
 To do this, you should append the `--build-arg <option_name>=<value>` flag to the 
