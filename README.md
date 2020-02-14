@@ -51,7 +51,7 @@ docker network create caddy_exposed -d bridge
 docker network create -d overlay --attachable caddy_backbone
 ```
 
-Now you can create other containers and attach them to `caddy_bacbone` to let 
+Now you can create other containers and attach them to `caddy_backbone` to let 
 Caddy talk with them; also, you have the benefit of Docker's internal DNS: you 
 are able to write the container's name into the Caddyfile, even if that 
 container is on a different Docker host.
@@ -75,7 +75,7 @@ network:
 
 ```bash
 # Spawn the Swarm network on this node using an independent container
-docker run -d --name overlay_net_pinner --net=caddy_backbone --ip=10.0.0.200 nginx
+docker run -d --name pinner --net=caddy_backbone --ip=10.0.0.200 busybox sh -c "while [ 1 -eq 1 ]; do sleep 1; done"
 ```
 
 ### Deploying the container with compose
