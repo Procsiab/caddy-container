@@ -70,12 +70,12 @@ docker swarm join --token <SWARM_TOKEN> --advertise-addr <WORKER_NODE_IP> <LEADE
 **WARNING**
 
 The following command is needed if you will use docker-compose instead deploying 
-services; you should run it on all the workers that joinde your Caddy leader's 
-network:
+services; you should run it on using the same number of replicas as the workers that 
+joined your Caddy leader's network (the command below must be run on the swarm leader 
+with only a single worker in the cluster)
 
 ```bash
-# Spawn the Swarm network on this node using an independent container
-docker run -d --name pinner --net=caddy_backbone --ip=10.0.0.200 busybox sh -c "while [ 1 -eq 1 ]; do sleep 1; done"
+docker service create --network caddy_backbone --constraint node.role==worker --replicas 1 --name pinner busybox sh -c "while [ 1 -eq 1 ]; do sleep 1; done"
 ```
 
 ### Deploying the container with compose
