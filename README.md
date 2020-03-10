@@ -12,15 +12,16 @@ You can tweak the image build to fit your needing or, more important, your Docke
 host's architecture; use the following command to run a build using the default 
 parameters:
 
-```bash
-docker build -t mycustom/caddy .
-```
-
-You can change the following options
 - `collect_metrics` (on | off)
 - `license_type` (personal | enterprise)
 - `linux_architecture` (arm7 | amd64 | ...)
 - `alpine_image_version` (latest | 3.10 | ...)
+
+The Dockerfile is written to allow cross-architecture builds, using QEMU's user-static package: to build the image on x86 for another platform do the following:
+
+- be sure to install `qemu-user-static` if you need to run the container on an architecture different from the local one;
+- to build the container for *aarch64*, run `cp $(which qemu-aarch64-static) .`;
+- run the build process with `docker build -t myregistry/caddy:arm64 .`.
 
 To do this, you should append the `--build-arg <option_name>=<value>` flag to the 
 build command, for each argument you want to specify a value for.
@@ -92,6 +93,6 @@ to quickly set up his Cloudflare DNS routing with the Caddy proxy container.
 
 **WARNING**
 
-The default docker-compose.yml file will pull the `arm32` variant of the image: 
+The default docker-compose.yml file will pull the `arm64` variant of the image: 
 check the Docker Hub for the desired variant, or build it yourself for your 
 target architecture and change the `image` statement in the compose file.

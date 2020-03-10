@@ -1,10 +1,13 @@
-FROM alpine:3.11
+FROM arm64v8/alpine:3.11
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Configuration parameters
 ARG collect_metrics=off
 ARG license_type=personal
-ARG linux_architecture=arm7
+ARG linux_architecture=arm64
+
+# QEMU static binary
+COPY qemu-aarch64-static /usr/bin/
 
 # Download environment tools
 RUN apk add --no-cache \
@@ -28,6 +31,8 @@ VOLUME /root/.caddy /srv
 WORKDIR /srv
 
 COPY Caddyfile /etc/Caddyfile
+
+RUN rm -rf /usr/bin/qemu-aarch64-static
 
 # Run the proxy
 ENTRYPOINT ["/usr/bin/caddy"]

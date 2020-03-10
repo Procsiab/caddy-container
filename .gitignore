@@ -1,3 +1,7 @@
+# Secrets files
 secrets.env
+# Application data
 config/*
 Caddyfile
+# QEMU's static binaries
+qemu-*
