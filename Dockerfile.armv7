@@ -1,12 +1,15 @@
-FROM amd64/alpine:3.11
+FROM arm32v7/alpine:3.11
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Configuration parameters
 ARG collect_metrics=off
 ARG license_type=personal
 ARG platform=linux
-ARG architecture=amd64
+ARG architecture=arm7
 ARG plugin_list="http.forwardproxy,http.ipfilter,http.minify,http.nobots,http.proxyprotocol,http.ratelimit,http.realip,http.restic,tls.dns.cloudflare"
+
+# QEMU static binary
+COPY qemu-arm-static /usr/bin/
 
 # Download environment tools
 RUN apk add --no-cache \
@@ -26,6 +29,8 @@ VOLUME /root/.caddy /srv
 WORKDIR /srv
 
 COPY Caddyfile /etc/Caddyfile
+
+RUN rm -rf /usr/bin/qemu-arm-static
 
 # Run the proxy
 ENTRYPOINT ["/usr/bin/caddy"]

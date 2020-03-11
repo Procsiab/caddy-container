@@ -4,7 +4,9 @@
 
 This repository will help you create and deploy a container with the caddy proxy, 
 even among different Docker hosts. It will use the official caddy website download, 
-with some extra plugins.
+with some extra plugins by default; also, the Docker Images for ARMv7, AARCH64 and
+x86\_X64 platforms are automatically built from this repository, and available from 
+[Docker Hub](https://hub.docker.com/r/procsiab/caddy)
 
 ### Build the image (optional)
 
@@ -12,19 +14,22 @@ You can tweak the image build to fit your needing or, more important, your Docke
 host's architecture; use the following command to run a build using the default 
 parameters:
 
-- `collect_metrics` (on | off)
-- `license_type` (personal | enterprise)
-- `linux_architecture` (arm7 | amd64 | ...)
-- `alpine_image_version` (latest | 3.10 | ...)
+|Option name|Example value|
+|-|:-:|
+|`collect_metrics` | (on \| off)|
+|`license_type` | (personal \| enterprise)|
+|`platform` | (linux \| windows \| ...)|
+|`architecture` | (arm7 \| amd64 \| ...)|
+|`plugin_list` | ("http.forwardproxy,tls.dns.cloudflare")|
+
+To do this, you should append the `--build-arg <option_name>=<value>` flag to the 
+build command, for each argument you want to specify a value for.
 
 The Dockerfile is written to allow cross-architecture builds, using QEMU's user-static package: to build the image on x86 for another platform do the following:
 
 - be sure to install `qemu-user-static` if you need to run the container on an architecture different from the local one;
 - to build the container for *aarch64*, run `cp $(which qemu-aarch64-static) .`;
-- run the build process with `docker build -t myregistry/caddy:arm64 .`.
-
-To do this, you should append the `--build-arg <option_name>=<value>` flag to the 
-build command, for each argument you want to specify a value for.
+- run the build process with `docker build -f Dockerfile.aarch64 -t myregistry/caddy:latest-aarch64 .`.
 
 ----
 
@@ -87,12 +92,12 @@ the container will need a restart to let the changes take effect: in that case
 you can use the `docker-compose restart` command.
 
 The Caddyfile and the secrets in the secrets.env file are built to allow a user 
-to quickly set up his Cloudflare DNS routing with the Caddy proxy container.
+to quickly set up his Cloudflare DNS routing to the Caddy proxy container.
 
 ----
 
 **WARNING**
 
-The default docker-compose.yml file will pull the `arm64` variant of the image: 
-check the Docker Hub for the desired variant, or build it yourself for your 
+The default docker-compose.yml file will pull the `latest-aarch64` variant of the
+image: check the Docker Hub for the desired variant, or build it yourself for your 
 target architecture and change the `image` statement in the compose file.
