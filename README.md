@@ -8,6 +8,11 @@ with some extra plugins by default; also, the Docker Images for ARMv7, AARCH64 a
 x86\_X64 platforms are automatically built from this repository, and available from 
 [Docker Hub](https://hub.docker.com/r/procsiab/caddy)
 
+#### Changing the configuration
+
+You are free to change the contents of *Caddyfile* and *secrets.env*: these files 
+are assumed unchanged by the Git index.
+
 ### Build the image (optional)
 
 You can tweak the image build to fit your needing or, more important, your Docker 
