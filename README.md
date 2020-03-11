@@ -4,9 +4,9 @@
 
 This repository will help you create and deploy a container with the caddy proxy, 
 even among different Docker hosts. It will use the official caddy website download, 
-with some extra plugins by default; also, the Docker Images for ARMv7, AARCH64 and
-x86\_X64 platforms are automatically built from this repository, and available from 
-[Docker Hub](https://hub.docker.com/r/procsiab/caddy)
+with some extra plugins by default.  
+Also, the Docker Images for ARMv7, AARCH64 and x86\_X64 platforms are automatically 
+built from this repository, and available from [Docker Hub](https://hub.docker.com/r/procsiab/caddy)
 
 #### Changing the configuration
 
