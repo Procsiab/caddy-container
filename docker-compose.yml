@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
     caddy:
-        image: procsiab/caddy:1.0-aarch64
+        image: procsiab/caddy:2.0-aarch64
         container_name: caddy
         hostname: caddy
         ports:

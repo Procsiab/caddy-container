@@ -1,12 +1,9 @@
-FROM arm32v7/alpine:3.11.6
+FROM arm32v7/alpine:3.12.0
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Configuration parameters
-ARG collect_metrics=off
-ARG license_type=personal
 ARG platform=linux
-ARG architecture=arm7
-ARG plugin_list="http.forwardproxy,http.ipfilter,http.minify,http.nobots,http.proxyprotocol,http.ratelimit,http.realip,http.restic,tls.dns.cloudflare"
+ARG architecture=arm&arm=7
 
 # QEMU static binary
 COPY qemu-arm-static /usr/bin/
@@ -19,8 +16,8 @@ RUN apk add --no-cache \
 
 # Download Caddy from its website
 RUN cd /tmp && \
-    wget https://caddyserver.com/download/${platform}/${architecture}\?plugins\=${plugin_list}\&license\=${license_type}\&telemetry\=${collect_metrics} -q -O caddy.tar.gz && \
-    tar -zxf caddy.tar.gz caddy && \
+    wget "https://caddyserver.com/api/download?os=${platform}&arch=${architecture}&p=github.com%2Fcaddy-dns%2Fcloudflare" -q -O caddy && \
+    chmod +x /tmp/caddy && \
     mv /tmp/caddy /usr/bin/caddy
 
 # Configure system
@@ -34,4 +31,4 @@ RUN rm -rf /usr/bin/qemu-arm-static
 
 # Run the proxy
 ENTRYPOINT ["/usr/bin/caddy"]
-CMD ["--conf", "/etc/Caddyfile", "--log", "stdout", "--agree=true"]
+CMD ["run", "-config", "/etc/Caddyfile"]
