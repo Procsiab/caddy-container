@@ -10,8 +10,13 @@ built from this repository, and available from [Docker Hub](https://hub.docker.c
 
 #### Changing the configuration
 
-You are free to change the contents of *Caddyfile* and *secrets.env*: these files 
-are assumed unchanged by the Git index.
+To change the contents of *Caddyfile* and *secrets.env* without having Git to
+store your secrets, run the following git command:
+
+```bash
+git update-index --assume-unchanged Caddyfile
+git update-index --assume-unchanged secrets.env
+```
 
 ### Build the image (optional)
 
@@ -21,11 +26,10 @@ parameters:
 
 |Option name|Example value|
 |-|:-:|
-|`collect_metrics` | (on \| off)|
-|`license_type` | (personal \| enterprise)|
 |`platform` | (linux \| windows \| ...)|
 |`architecture` | (arm7 \| amd64 \| ...)|
-|`plugin_list` | ("http.forwardproxy,tls.dns.cloudflare")|
+
+**NOTE**: The Cloudflare DNS Caddy module is included by default as a strong requirement.
 
 To do this, you should append the `--build-arg <option_name>=<value>` flag to the 
 build command, for each argument you want to specify a value for.
