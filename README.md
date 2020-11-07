@@ -107,6 +107,6 @@ to quickly set up his Cloudflare DNS routing to the Caddy proxy container.
 
 **WARNING**
 
-The default docker-compose.yml file will pull the `latest-aarch64` variant of the
+The default docker-compose.yml file will pull the `-aarch64` variant of the
 image: check the Docker Hub for the desired variant, or build it yourself for your 
 target architecture and change the `image` statement in the compose file.

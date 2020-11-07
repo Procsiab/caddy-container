@@ -1,4 +1,4 @@
-FROM arm64v8/alpine:3.12.0
+FROM arm64v8/alpine:3.12.1
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Configuration parameters
@@ -15,20 +15,27 @@ RUN apk add --no-cache \
     tar
 
 # Download Caddy from its website
-RUN cd /tmp && \
+RUN mkdir -p \
+    /config/caddy \
+    /data/caddy \
+    /etc/caddy \
+    /usr/share/caddy && \
+    cd /tmp && \
     wget "https://caddyserver.com/api/download?os=${platform}&arch=${architecture}&p=github.com%2Fcaddy-dns%2Fcloudflare" -q -O caddy && \
     chmod +x /tmp/caddy && \
     mv /tmp/caddy /usr/bin/caddy
 
 # Configure system
 EXPOSE 80 443
-VOLUME /root/.caddy /srv
+VOLUME /config /data
+ENV XDG_CONFIG_HOME /config
+ENV XDG_DATA_HOME /data
 WORKDIR /srv
 
-COPY Caddyfile /etc/Caddyfile
+COPY Caddyfile /etc/caddy/Caddyfile
 
-RUN rm -rf /usr/bin/qemu-aarch64-static
+RUN rm -rf /usr/bin/qemu-arm-static
 
 # Run the proxy
 ENTRYPOINT ["/usr/bin/caddy"]
-CMD ["run", "-config", "/etc/Caddyfile"]
+CMD ["run", "-config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

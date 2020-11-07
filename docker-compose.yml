@@ -9,12 +9,11 @@ services:
             - "0.0.0.0:80:80/tcp"
             - "0.0.0.0:443:443/tcp"
         volumes:
-            - ./config/:/root/.caddy:z
-            - ./Caddyfile/:/etc/Caddyfile:z
+            - ./config/:/config:Z
+            - ./data/:/data:Z
+            - ./Caddyfile/:/etc/caddy/Caddyfile:Z
         env_file:
             - ./secrets.env
-        environment:
-            - ENABLE_TELEMETRY=false
         restart: unless-stopped
         cap_add:
             - NET_BIND_SERVICE
