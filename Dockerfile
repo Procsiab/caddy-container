@@ -1,4 +1,4 @@
-FROM amd64/alpine:3.12.1
+FROM amd64/alpine:3.13.2
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Configuration parameters
