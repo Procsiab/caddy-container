@@ -1,5 +1,9 @@
 # Caddy Container
 
+[![Container Build](https://github.com/Procsiab/caddy-container/actions/workflows/build-container-publish-dockerhub.yaml/badge.svg)](https://github.com/Procsiab/caddy-container/actions/workflows/build-container-publish-dockerhub.yaml)
+
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/procsiab/caddy?label=Latest%20tag%20pushed%20on%20Docker%20Hub)
+
 ## How it works
 
 This repository will help you create and deploy a container with the caddy proxy, 
