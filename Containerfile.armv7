@@ -1,29 +1,27 @@
-FROM arm32v7/alpine:3.13.2
-LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
+ARG caddyversion=2.4.6
 
-# Configuration parameters
-ARG platform=linux
-ARG architecture=arm&arm=7
+FROM caddy:${caddyversion}-builder-alpine as builder
+
+RUN xcaddy build \
+    --with github.com/caddy-dns/cloudflare
+
+FROM arm32v7/alpine:3.14.3
+LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # QEMU static binary
 COPY qemu-arm-static /usr/bin/
 
 # Download environment tools
 RUN apk add --no-cache \
-    ca-certificates \
-    wget \
-    tar
+    ca-certificates
 
-# Download Caddy from its website
+# Create directories and get Caddy binary from builder
 RUN mkdir -p \
     /config/caddy \
     /data/caddy \
     /etc/caddy \
-    /usr/share/caddy && \
-    cd /tmp && \
-    wget "https://caddyserver.com/api/download?os=${platform}&arch=${architecture}&p=github.com%2Fcaddy-dns%2Fcloudflare" -q -O caddy && \
-    chmod +x /tmp/caddy && \
-    mv /tmp/caddy /usr/bin/caddy
+    /usr/share/caddy
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 # Configure system
 EXPOSE 80 443

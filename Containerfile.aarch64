@@ -1,26 +1,27 @@
-FROM amd64/alpine:3.13.2
+ARG caddyversion=2.4.6
+
+FROM caddy:${caddyversion}-builder-alpine as builder
+
+RUN xcaddy build \
+    --with github.com/caddy-dns/cloudflare
+
+FROM arm64v8/alpine:3.14.3
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
-# Configuration parameters
-ARG platform=linux
-ARG architecture=amd64
+# QEMU static binary
+COPY qemu-aarch64-static /usr/bin/
 
 # Download environment tools
 RUN apk add --no-cache \
-    ca-certificates \
-    wget \
-    tar
+    ca-certificates
 
-# Create directories and download Caddy from its website
+# Create directories and get Caddy binary from builder
 RUN mkdir -p \
     /config/caddy \
     /data/caddy \
     /etc/caddy \
-    /usr/share/caddy && \
-    cd /tmp && \
-    wget "https://caddyserver.com/api/download?os=${platform}&arch=${architecture}&p=github.com%2Fcaddy-dns%2Fcloudflare" -q -O caddy && \
-    chmod +x /tmp/caddy && \
-    mv /tmp/caddy /usr/bin/caddy
+    /usr/share/caddy
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 # Configure system
 EXPOSE 80 443
@@ -30,6 +31,8 @@ ENV XDG_DATA_HOME /data
 WORKDIR /srv
 
 COPY Caddyfile /etc/caddy/Caddyfile
+
+RUN rm -rf /usr/bin/qemu-aarch64-static
 
 # Run the proxy
 ENTRYPOINT ["/usr/bin/caddy"]

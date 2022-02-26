@@ -1,0 +1,34 @@
+ARG caddyversion=2.4.6
+
+FROM caddy:${caddyversion}-builder-alpine as builder
+
+RUN xcaddy build \
+    --with github.com/caddy-dns/cloudflare
+
+FROM amd64/alpine:3.14.3
+LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
+
+# Download environment tools
+RUN apk add --no-cache \
+    ca-certificates
+
+# Create directories and get Caddy binary from builder
+RUN mkdir -p \
+    /config/caddy \
+    /data/caddy \
+    /etc/caddy \
+    /usr/share/caddy
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+
+# Configure system
+EXPOSE 80 443
+VOLUME /config /data
+ENV XDG_CONFIG_HOME /config
+ENV XDG_DATA_HOME /data
+WORKDIR /srv
+
+COPY Caddyfile /etc/caddy/Caddyfile
+
+# Run the proxy
+ENTRYPOINT ["/usr/bin/caddy"]
+CMD ["run", "-config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

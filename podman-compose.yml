@@ -2,9 +2,8 @@ version: '3.4'
 
 services:
     caddy:
-        image: procsiab/caddy:2.2-aarch64
+        image: procsiab/caddy:2.3-aarch64
         container_name: caddy
-        hostname: caddy
         ports:
             - "0.0.0.0:80:80/tcp"
             - "0.0.0.0:443:443/tcp"
@@ -14,15 +13,5 @@ services:
             - ./Caddyfile/:/etc/caddy/Caddyfile:Z
         env_file:
             - ./secrets.env
-        restart: unless-stopped
         cap_add:
             - NET_BIND_SERVICE
-        networks:
-            - caddy_exposed
-            - caddy_backbone
-
-networks:
-    caddy_exposed:
-        external: true
-    caddy_backbone:
-        external: true
