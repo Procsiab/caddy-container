@@ -1,6 +1,6 @@
 ARG caddyversion=2.4.6
 
-FROM arm64v8/caddy:${caddyversion}-builder-alpine AS builder
+FROM docker.io/arm64v8/caddy:${caddyversion}-builder-alpine AS builder
 
 # QEMU static binary
 COPY qemu-aarch64-static /usr/bin/
@@ -8,7 +8,7 @@ COPY qemu-aarch64-static /usr/bin/
 RUN xcaddy build \
     --with github.com/caddy-dns/cloudflare
 
-FROM arm64v8/alpine:3.14.3
+FROM docker.io/arm64v8/alpine:3.15.4
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 COPY --from=builder /usr/bin/qemu-aarch64-static /usr/bin/
