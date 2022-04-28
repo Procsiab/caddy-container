@@ -1,4 +1,4 @@
-ARG caddyversion=2.4.6
+ARG caddyversion=2.5.0
 
 FROM docker.io/arm64v8/caddy:${caddyversion}-builder-alpine AS builder
 
