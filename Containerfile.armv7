@@ -31,9 +31,9 @@ EXPOSE 80 443
 VOLUME /config /data
 ENV XDG_CONFIG_HOME /config
 ENV XDG_DATA_HOME /data
+ENV CADDYFILE_PATH=/etc/caddy/Caddyfile
 WORKDIR /srv
 
-COPY Caddyfile /etc/caddy/Caddyfile
 COPY signal-handler.sh /
 RUN chmod +x /signal-handler.sh
 
@@ -41,4 +41,4 @@ RUN rm -rf /usr/bin/qemu-arm-static
 
 # Run the proxy and the signal handler with Tini
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["/signal-handler.sh", "caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+CMD ["/signal-handler.sh", "caddy", "run", "--config", "$CADDYFILE_PATH", "--adapter", "caddyfile"]

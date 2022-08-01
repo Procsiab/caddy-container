@@ -2,7 +2,7 @@
 
 _reload() { 
     echo "Caught SIGHUP signal, reloading Caddy"
-    caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+    caddy reload --config $CADDYFILE_PATH --adapter caddyfile
     _wait
 }
 
