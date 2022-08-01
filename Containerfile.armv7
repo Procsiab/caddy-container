@@ -1,4 +1,4 @@
-ARG caddyversion=2.5.1
+ARG caddyversion=2.5.2
 
 FROM docker.io/arm32v7/caddy:${caddyversion}-builder-alpine AS builder
 
@@ -8,14 +8,15 @@ COPY qemu-arm-static /usr/bin/
 RUN xcaddy build \
     --with github.com/caddy-dns/cloudflare
 
-FROM docker.io/arm32v7/alpine:3.15.4
+FROM docker.io/arm32v7/alpine:3.16.1
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 COPY --from=builder /usr/bin/qemu-arm-static /usr/bin/
 
 # Download environment tools
 RUN apk add --no-cache \
-    ca-certificates
+    ca-certificates \
+    tini
 
 # Create directories and get Caddy binary from builder
 RUN mkdir -p \
@@ -33,9 +34,11 @@ ENV XDG_DATA_HOME /data
 WORKDIR /srv
 
 COPY Caddyfile /etc/caddy/Caddyfile
+COPY signal-handler.sh /
+RUN chmod +x /signal-handler.sh
 
 RUN rm -rf /usr/bin/qemu-arm-static
 
-# Run the proxy
-ENTRYPOINT ["/usr/bin/caddy"]
-CMD ["run", "-config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+# Run the proxy and the signal handler with Tini
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["/signal-handler.sh", "caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

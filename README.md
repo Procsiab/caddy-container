@@ -11,6 +11,14 @@ with the CloudFlare DNS plugin compiled.
 Also, the container images for ARMv7, AARCH64 and x86\_64 platforms are automatically 
 built from this repository, and available from [Docker Hub](https://hub.docker.com/r/procsiab/caddy)
 
+### Hashicorp Nomad Template
+
+Following [this](https://github.com/optiz0r/caddy-consul) the idea of the GitHub user `optiz0r`, which I read from [this](https://github.com/caddyserver/caddy/issues/3967#issuecomment-789086024) issue, I added a Bash signal handler, and changed the container entrypoint accordingly to run the handler and Caddy through Tini.
+
+This way, I am able to send the SIGHUP through the Nomad Template stanza and have the Caddy process reload its configuration afterwards.
+
+**NOTE**: In Caddy v1 SIGUSR1 was used to trigger the configuration reload, however it is still not supported in Nomad to pass that signal to allocations.
+
 #### Changing the configuration
 
 To change the contents of *Caddyfile* and *secrets.env* without having Git to
