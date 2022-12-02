@@ -1,11 +1,11 @@
-ARG caddyversion=2.6.1
+ARG caddyversion=2.6.2
 
 FROM docker.io/amd64/caddy:${caddyversion}-builder-alpine as builder
 
 RUN xcaddy build \
     --with github.com/caddy-dns/cloudflare
 
-FROM docker.io/amd64/alpine:3.16.2
+FROM docker.io/amd64/alpine:3.16.3
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Download environment tools
