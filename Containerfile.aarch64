@@ -8,15 +8,15 @@ COPY qemu-aarch64-static /usr/bin/
 RUN xcaddy build \
     --with github.com/caddy-dns/cloudflare
 
-FROM docker.io/arm64v8/alpine:3.16.3
+FROM docker.io/arm64v8/alpine:3.17.1
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 COPY --from=builder /usr/bin/qemu-aarch64-static /usr/bin/
 
 # Download environment tools
 RUN apk add --no-cache \
-    ca-certificates \
-    tini
+    'ca-certificates=20220614-r4' \
+    'tini=0.19.0-r1'
 
 # Create directories and get Caddy binary from builder
 RUN mkdir -p \
