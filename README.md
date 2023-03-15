@@ -35,8 +35,7 @@ git update-index --assume-unchanged secrets.env
 
 The Containerfile is written to allow cross-architecture builds, using QEMU's user-static package: to build the image on x86 for another platform do the following:
 
-- be sure to install `qemu-user-static` if you need to run the container on an architecture different from the local one;
-- to build the container for *aarch64*, run `cp $(which qemu-aarch64-static) .`;
+- be sure to install `qemu-user-static` if you need to run the container on an architecture different from the local builder's one;
 - run the build process with `podman build -f Containerfile.aarch64 -t mycompany/caddy:latest-aarch64 .`.
 
 To build using a different Caddy version (e.g. 2.0.0), append the following argument on the command line to `podman build`:

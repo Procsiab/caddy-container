@@ -2,16 +2,11 @@ ARG caddyversion=2.6.4
 
 FROM docker.io/arm64v8/caddy:${caddyversion}-builder-alpine AS builder
 
-# QEMU static binary
-COPY qemu-aarch64-static /usr/bin/
-
 RUN xcaddy build \
     --with github.com/caddy-dns/cloudflare
 
 FROM docker.io/arm64v8/alpine:3.17.2
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
-
-COPY --from=builder /usr/bin/qemu-aarch64-static /usr/bin/
 
 # Download environment tools
 RUN apk add --no-cache \
@@ -36,8 +31,6 @@ WORKDIR /srv
 
 COPY signal-handler.sh /
 RUN chmod +x /signal-handler.sh
-
-RUN rm -rf /usr/bin/qemu-aarch64-static
 
 # Run the proxy and the signal handler with Tini
 CMD /sbin/tini -- /signal-handler.sh caddy run --config ${CADDYFILE_PATH} --adapter caddyfile
