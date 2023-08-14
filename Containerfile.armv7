@@ -1,11 +1,11 @@
-ARG caddyversion=2.6.4
+ARG caddyversion=2.7.3
 
-FROM docker.io/arm32v7/caddy:${caddyversion}-builder-alpine AS builder
+FROM docker.io/caddy/caddy:${caddyversion}-builder-alpine AS builder
 
-RUN xcaddy build \
+RUN GOARCH=arm xcaddy build \
     --with github.com/caddy-dns/cloudflare
 
-FROM docker.io/arm32v7/alpine:3.18.0
+FROM docker.io/arm32v7/alpine:3.18.3
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Download environment tools
