@@ -1,4 +1,4 @@
-ARG caddyversion=2.7.6
+ARG caddyversion=2.8.4
 
 FROM docker.io/caddy/caddy:${caddyversion}-builder-alpine AS builder
 
@@ -6,12 +6,12 @@ RUN GOARCH=amd64 xcaddy build \
     --with github.com/pteich/caddy-tlsconsul \
     --with github.com/caddy-dns/cloudflare
 
-FROM docker.io/amd64/alpine:3.19.0
+FROM docker.io/amd64/alpine:3.20.0
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Download environment tools
 RUN apk add --no-cache \
-    'ca-certificates=20230506-r0'
+    'ca-certificates=20240226-r0'
 
 # Create directories and get Caddy binary from builder
 RUN mkdir -p \
