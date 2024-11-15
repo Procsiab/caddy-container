@@ -3,7 +3,7 @@ ARG PLTF_ARCH=arm64
 
 FROM docker.io/caddy/caddy:${caddyversion}-builder-alpine AS builder
 
-RUN GOARCH=${PLTF_ARCH} xcaddy build \
+RUN GOARCH=arm64 xcaddy build \
     --with github.com/pteich/caddy-tlsconsul@v1.5.0 \
     --with github.com/caddy-dns/cloudflare@89f16b99c18ef49c8bb470a82f895bce01cbaece
 
