@@ -1,18 +1,18 @@
-ARG caddyversion=2.11.1
+ARG caddyversion=2.11.3
 ARG PLTF_ARCH=arm/v7
 
 FROM docker.io/caddy/caddy:${caddyversion}-builder-alpine AS builder
 
 RUN GOARCH=arm xcaddy build \
     --with github.com/pteich/caddy-tlsconsul@v1.5.0 \
-    --with github.com/caddy-dns/cloudflare@v0.2.3
+    --with github.com/caddy-dns/cloudflare@v0.2.4
 
-FROM --platform=linux/${PLTF_ARCH} docker.io/library/alpine:3.23.3
+FROM --platform=linux/${PLTF_ARCH} docker.io/library/alpine:3.23.4
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Download environment tools
 RUN apk add --no-cache \
-    'ca-certificates=20251003-r0'
+    'ca-certificates=20260413-r0'
 
 # Create directories and get Caddy binary from builder
 RUN mkdir -p \
