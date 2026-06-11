@@ -1,4 +1,4 @@
-ARG caddyversion=2.11.3
+ARG caddyversion=2.11.4
 ARG PLTF_ARCH=amd64
 
 FROM docker.io/caddy/caddy:${caddyversion}-builder-alpine AS builder
@@ -7,7 +7,7 @@ RUN GOARCH=amd64 xcaddy build \
     --with github.com/pteich/caddy-tlsconsul@v1.5.0 \
     --with github.com/caddy-dns/cloudflare@v0.2.4
 
-FROM --platform=linux/${PLTF_ARCH} docker.io/library/alpine:3.23.4
+FROM --platform=linux/${PLTF_ARCH} docker.io/library/alpine:3.24.0
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Download environment tools
