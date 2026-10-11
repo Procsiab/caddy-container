@@ -1,4 +1,4 @@
-ARG caddyversion=2.11.4
+ARG caddyversion=2.11.7
 ARG PLTF_ARCH=arm/v7
 
 FROM docker.io/caddy/caddy:${caddyversion}-builder-alpine AS builder
@@ -7,12 +7,12 @@ RUN GOARCH=arm xcaddy build \
     --with github.com/pteich/caddy-tlsconsul@v1.5.0 \
     --with github.com/caddy-dns/cloudflare@v0.2.4
 
-FROM --platform=linux/${PLTF_ARCH} docker.io/library/alpine:3.24.0
-LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
+FROM --platform=linux/${PLTF_ARCH} docker.io/library/alpine:3.24.2
+LABEL maintainer="Lorenzo Prosseda <lerokamut@gmail.com>"
 
 # Download environment tools
 RUN apk add --no-cache \
-    'ca-certificates=20260413-r0'
+    'ca-certificates=20260909-r0'
 
 # Create directories and get Caddy binary from builder
 RUN mkdir -p \
@@ -25,8 +25,8 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 # Configure system
 EXPOSE 80 443
 VOLUME /config /data
-ENV XDG_CONFIG_HOME /config
-ENV XDG_DATA_HOME /data
+ENV XDG_CONFIG_HOME=/config
+ENV XDG_DATA_HOME=/data
 ENV CADDYFILE_PATH=/etc/caddy/Caddyfile
 WORKDIR /srv
 
